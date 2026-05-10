@@ -1,0 +1,25 @@
+{
+	"name": "macrosbysara/pmpro-mailerlite-integration",
+	"description": "A WordPress plugin integrating Paid Memberships Pro with MailerLite.",
+	"type": "project",
+	"version": "1.0.0",
+	"autoload": {
+		"classmap": [
+			"inc/"
+		]
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"scripts": {
+		"phpcs": "phpcs inc/ pmpro-mailerlite-integration.php --extensions=php",
+		"phpcbf": "phpcbf inc/ pmpro-mailerlite-integration.php --extensions=php"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "*",
+		"dealerdirect/phpcodesniffer-composer-installer": "*"
+	}
+}
