@@ -9,12 +9,7 @@ import {
 } from '@wordpress/components';
 import useOptions from './useOptions';
 
-interface AppProps {
-	nonce: string;
-	restBase: string;
-}
-
-export default function App( { nonce, restBase }: AppProps ) {
+export default function App() {
 	const {
 		updateField,
 		fetchGroups,
@@ -26,7 +21,7 @@ export default function App( { nonce, restBase }: AppProps ) {
 		groups,
 		handleSubmit,
 		setNotices,
-	} = useOptions( nonce, restBase );
+	} = useOptions();
 
 	if ( isLoading ) {
 		return (
@@ -62,15 +57,15 @@ export default function App( { nonce, restBase }: AppProps ) {
 			<Panel>
 				<PanelBody title="MailerLite API Credentials">
 					<p>
-						Enter your MailerLite API key. You can find or create
-						it under <strong>Integrations → API</strong> in your
+						Enter your MailerLite API key. You can find or create it
+						under <strong>Integrations → API</strong> in your
 						MailerLite account.
 					</p>
 					<TextControl
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 						label="API Key"
-						type="password"
+						type="text"
 						value={ settings.apiKey }
 						onChange={ ( val ) => {
 							updateField( 'apiKey', val );
@@ -115,9 +110,9 @@ export default function App( { nonce, restBase }: AppProps ) {
 					) }
 					{ groups.length === 0 && settings.groupId && (
 						<p style={ { color: '#757575' } }>
-							Currently saved Group ID:{ ' ' }
-							<code>{ settings.groupId }</code>. Click "Fetch
-							Groups" to reload the list.
+							Currently saved Group:{ ' ' }
+							<strong>{ settings.groupName }</strong>. Click
+							“Fetch Groups” to reload the list.
 						</p>
 					) }
 				</PanelBody>

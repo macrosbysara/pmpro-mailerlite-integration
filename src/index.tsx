@@ -11,9 +11,6 @@ domReady( () => {
 	}
 	const root = createRoot( el );
 	root.render(
-		<App
-			nonce={ mbsSettings.nonce }
-			restBase={ mbsSettings.restBase }
-		/>
+		<App />
 	);
 } );
