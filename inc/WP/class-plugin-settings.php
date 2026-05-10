@@ -24,7 +24,7 @@ class Plugin_Settings {
 	 *
 	 * @var string
 	 */
-	public const OPTION_KEY = 'mbsml_options';
+	public const OPTION_KEY = 'mbs_options';
 
 	/**
 	 * The setting field keys stored in the option.

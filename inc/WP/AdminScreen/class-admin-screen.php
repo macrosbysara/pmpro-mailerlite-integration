@@ -53,7 +53,7 @@ class Admin_Screen {
 			'PMPro MailerLite Integration',
 			'PMPro MailerLite',
 			'manage_options',
-			'mbsml-settings',
+			'mbs-settings',
 			array( $this, 'render_settings_page' )
 		);
 	}
@@ -65,13 +65,13 @@ class Admin_Screen {
 	 * @return void
 	 */
 	public function load_required_assets( string $hook_suffix ): void {
-		if ( 'settings_page_mbsml-settings' !== $hook_suffix ) {
+		if ( 'settings_page_mbs-settings' !== $hook_suffix ) {
 			return;
 		}
 
 		$asset_file        = require $this->plugin_dir_path . '/build/index.asset.php';
 		$plugin_assets_url = plugin_dir_url( $this->plugin_dir_path . '/pmpro-mailerlite-integration.php' );
-		$asset_name        = 'mbsml-admin';
+		$asset_name        = 'mbs-admin';
 
 		wp_enqueue_script(
 			$asset_name,
@@ -83,9 +83,9 @@ class Admin_Screen {
 
 		wp_add_inline_script(
 			$asset_name,
-			'const mbsmlSettings = ' . wp_json_encode(
+			'const mbsSettings = ' . wp_json_encode(
 				array(
-					'restBase' => rest_url( 'mbsml/v1' ),
+					'restBase' => rest_url( 'mbs/v1' ),
 					'nonce'    => wp_create_nonce( 'wp_rest' ),
 				)
 			),

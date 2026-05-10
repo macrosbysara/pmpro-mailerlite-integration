@@ -12,9 +12,9 @@
 	<h1>PMPro MailerLite Integration</h1>
 
 	<div
-		id="mbsml-settings"
+		id="mbs-settings"
 		data-nonce="<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ); ?>"
-		data-rest-url="<?php echo esc_attr( rest_url( 'mbsml/v1' ) ); ?>"
+		data-rest-url="<?php echo esc_attr( rest_url( 'mbs/v1' ) ); ?>"
 	></div>
 
 	<noscript>

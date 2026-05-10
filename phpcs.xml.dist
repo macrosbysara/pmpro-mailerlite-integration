@@ -16,11 +16,11 @@
 	<!-- Minimum WordPress Version -->
 	<config name="minimum_wp_version" value="6.7.0"/>
 
-	<!-- Prefix All Globals with mbsml -->
+	<!-- Prefix All Globals with mbs -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes">
-				<element value="mbsml"/>
+				<element value="mbs"/>
 			</property>
 		</properties>
 	</rule>

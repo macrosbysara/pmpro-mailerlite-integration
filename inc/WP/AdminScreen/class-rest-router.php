@@ -2,9 +2,9 @@
 /**
  * REST Controller for PMPro MailerLite Integration Settings.
  *
- * Provides GET and POST endpoints at `mbsml/v1/settings` so the React
+ * Provides GET and POST endpoints at `mbs/v1/settings` so the React
  * admin app can read and persist plugin settings, plus a GET endpoint at
- * `mbsml/v1/groups` to fetch the available MailerLite groups.
+ * `mbs/v1/groups` to fetch the available MailerLite groups.
  *
  * @package MacrosBySara
  * @subpackage PMProMailerLite
@@ -41,7 +41,7 @@ class Rest_Router extends WP_REST_Controller {
 	 * @param Plugin_Settings $plugin_settings The settings manager instance.
 	 */
 	public function __construct( Plugin_Settings $plugin_settings ) {
-		$this->namespace       = 'mbsml/v1';
+		$this->namespace       = 'mbs/v1';
 		$this->plugin_settings = $plugin_settings;
 	}
 
