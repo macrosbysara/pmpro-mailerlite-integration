@@ -10,13 +10,7 @@
 ?>
 <div class="wrap">
 	<h1>PMPro MailerLite Integration</h1>
-
-	<div
-		id="mbs-settings"
-		data-nonce="<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ); ?>"
-		data-rest-url="<?php echo esc_attr( rest_url( 'mbs/v1' ) ); ?>"
-	></div>
-
+	<div id="mbs-settings"></div>
 	<noscript>
 		This plugin relies on JavaScript to function properly. Please enable JavaScript in your browser settings and refresh the page.
 	</noscript>

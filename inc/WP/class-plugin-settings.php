@@ -34,7 +34,10 @@ class Plugin_Settings {
 	public const SETTING_FIELDS = array(
 		'apiKey',
 		'groupId',
+		'groupName',
 	);
+
+	public const REST_NAMESPACE = 'mbs/pmpro-mailerlite/v1';
 
 	/**
 	 * Returns the default settings structure.

@@ -94,9 +94,10 @@ class Plugin_Loader {
 	 * @return void
 	 */
 	private function wire_checkout_handler(): void {
-		$settings        = $this->plugin_settings->get_settings();
-		$api_key         = $settings['apiKey'] ?? '';
-		$mailerlite      = new MailerLite_Service( $api_key );
+		$settings         = $this->plugin_settings->get_settings();
+		$api_key          = $settings['apiKey'] ?? '';
+		$notifier         = new WP\Notifier( array( 'kj.roelke@gmail.com', 'hello@macrosbysara.com' ) );
+		$mailerlite       = new MailerLite_Service( $api_key, $notifier );
 		$checkout_handler = new Checkout_Handler( $this->plugin_settings, $mailerlite );
 		add_action( 'pmpro_after_checkout', array( $checkout_handler, 'handle_after_checkout' ), 10, 2 );
 	}

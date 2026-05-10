@@ -41,7 +41,7 @@ class Rest_Router extends WP_REST_Controller {
 	 * @param Plugin_Settings $plugin_settings The settings manager instance.
 	 */
 	public function __construct( Plugin_Settings $plugin_settings ) {
-		$this->namespace       = 'mbs/v1';
+		$this->namespace       = $plugin_settings::REST_NAMESPACE;
 		$this->plugin_settings = $plugin_settings;
 	}
 

@@ -12,7 +12,7 @@
 
 namespace MacrosBySara\PMProMailerLite\Services;
 
-use WP_Error;
+use MacrosBySara\PMProMailerLite\WP\Notifier;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -37,12 +37,21 @@ class MailerLite_Service {
 	private string $api_key;
 
 	/**
+	 * The Notifier instance for sending notifications.
+	 *
+	 * @var Notifier $notifier
+	 */
+	private Notifier $notifier;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param string $api_key The MailerLite API key.
+	 * @param string   $api_key The MailerLite API key.
+	 * @param Notifier $notifier The Notifier instance for sending notifications.
 	 */
-	public function __construct( string $api_key ) {
-		$this->api_key = $api_key;
+	public function __construct( string $api_key, Notifier $notifier ) {
+		$this->api_key  = $api_key;
+		$this->notifier = $notifier;
 	}
 
 	/**
@@ -79,24 +88,41 @@ class MailerLite_Service {
 			),
 			'groups' => array( $group_id ),
 		);
+		try {
+			$response = wp_remote_post(
+				self::BASE_URL . '/subscribers',
+				array(
+					'headers' => $this->get_headers(),
+					'body'    => wp_json_encode( $body ),
+					'timeout' => 15,
+				)
+			);
 
-		$response = wp_remote_post(
-			self::BASE_URL . '/subscribers',
-			array(
-				'headers' => $this->get_headers(),
-				'body'    => wp_json_encode( $body ),
-				'timeout' => 15,
-			)
-		);
+			if ( is_wp_error( $response ) ) {
+				$this->notifier->send(
+					'MailerLite API Error',
+					sprintf(
+						'An error occurred while communicating with the MailerLite API: %s',
+						$response->get_error_code() . ' - ' . $response->get_error_message()
+					)
+				);
+				return false;
+			}
 
-		if ( is_wp_error( $response ) ) {
+			$status_code = wp_remote_retrieve_response_code( $response );
+
+			// MailerLite returns 200 (updated) or 201 (created) on success.
+			return in_array( $status_code, array( 200, 201 ), true );
+		} catch ( \Exception $e ) {
+			$this->notifier->send(
+				'MailerLite API Exception',
+				sprintf(
+					'An exception occurred while communicating with the MailerLite API: %s',
+					esc_textarea( $e->getMessage() )
+				)
+			);
 			return false;
 		}
-
-		$status_code = wp_remote_retrieve_response_code( $response );
-
-		// MailerLite returns 200 (updated) or 201 (created) on success.
-		return in_array( $status_code, array( 200, 201 ), true );
 	}
 
 	/**

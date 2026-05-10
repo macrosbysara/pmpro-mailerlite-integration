@@ -85,7 +85,7 @@ class Admin_Screen {
 			$asset_name,
 			'const mbsSettings = ' . wp_json_encode(
 				array(
-					'restBase' => rest_url( 'mbs/v1' ),
+					'restBase' => $this->plugin_settings::REST_NAMESPACE,
 					'nonce'    => wp_create_nonce( 'wp_rest' ),
 				)
 			),

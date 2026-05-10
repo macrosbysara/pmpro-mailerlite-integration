@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: PMPro MailerLite Integration
+ * Plugin Name: [Macros By Sara] PMPro MailerLite Integration
  * Plugin URI: https://github.com/macrosbysara/pmpro-mailerlite-integration
  * Description: Integrates Paid Memberships Pro with MailerLite to subscribe members to a group on checkout.
  * Version: 1.0.0
