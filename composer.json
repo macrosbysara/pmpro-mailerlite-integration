@@ -11,7 +11,8 @@
 	"config": {
 		"allow-plugins": {
 			"composer/installers": true,
-			"dealerdirect/phpcodesniffer-composer-installer": true
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"php-http/discovery": true
 		}
 	},
 	"scripts": {
@@ -21,5 +22,10 @@
 	"require-dev": {
 		"wp-coding-standards/wpcs": "*",
 		"dealerdirect/phpcodesniffer-composer-installer": "*"
+	},
+	"require": {
+		"mailerlite/mailerlite-php": "^1.0",
+		"symfony/http-client": "^8.0",
+		"nyholm/psr7": "^1.8"
 	}
 }
