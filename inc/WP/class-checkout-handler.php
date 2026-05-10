@@ -76,7 +76,8 @@ class Checkout_Handler {
 			$user->user_email,
 			$user->first_name,
 			$user->last_name,
-			$group_id
+			$group_id,
+			$order->membership_id
 		);
 	}
 }

@@ -77,10 +77,11 @@ class MailerLite_Service {
 	 * @param string $first_name The subscriber's first name.
 	 * @param string $last_name  The subscriber's last name.
 	 * @param string $group_id   The MailerLite group ID to assign the subscriber to.
+	 * @param string $membership_level The PMPro membership level ID to set as a custom field in MailerLite.
 	 * @return bool True on success, false on failure.
 	 */
-	public function upsert_subscriber( string $email, string $first_name, string $last_name, string $group_id ): bool {
-		$body = array(
+	public function upsert_subscriber( string $email, string $first_name, string $last_name, string $group_id, string $membership_level ): bool {
+		$body             = array(
 			'email'  => $email,
 			'fields' => array(
 				'name'      => $first_name,
@@ -88,6 +89,15 @@ class MailerLite_Service {
 			),
 			'groups' => array( $group_id ),
 		);
+		$custom_field_map = array(
+			2 => 'nutrition',
+			3 => 'fitness',
+			4 => 'nutrition-otp',
+			5 => 'fitness-otp',
+		);
+		if ( in_array( (int) $membership_level, array_keys( $custom_field_map ), true ) ) {
+			$body['fields']['consistency_club_type'] = $custom_field_map[ (int) $membership_level ];
+		}
 		try {
 			$response = wp_remote_post(
 				self::BASE_URL . '/subscribers',
