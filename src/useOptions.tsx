@@ -1,7 +1,14 @@
 import { useState, useEffect, useCallback } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
-export default function useOptions( nonce: string, restBase: string ) {
+export default function useOptions() {
+	const nonce = mbsSettings.nonce;
+	const restBase = mbsSettings.restBase;
+	if ( ! nonce || ! restBase ) {
+		throw new Error(
+			'Required settings not found. Make sure the REST API nonce and base URL are correctly localized in the page.'
+		);
+	}
 	const [ settings, setSettings ] = useState< Settings >( {} as Settings );
 	const [ groups, setGroups ] = useState< MailerLiteGroup[] >( [] );
 	const [ isLoading, setIsLoading ] = useState( true );
@@ -49,11 +56,30 @@ export default function useOptions( nonce: string, restBase: string ) {
 	 * The API key must be saved before calling this function.
 	 */
 	const fetchGroups = useCallback( () => {
+		if ( ! settings.apiKey ) {
+			setNotices( ( prev ) => [
+				...prev,
+				{
+					content: 'Please save your API key before fetching groups.',
+					politeness: 'assertive' as const,
+					id: Math.random().toString( 36 ).slice( 2, 9 ),
+					explicitDismiss: false,
+				},
+			] );
+			return;
+		}
 		setIsFetchingGroups( true );
-		apiFetch< MailerLiteGroup[] >( { path: restBase + '/groups' } )
+		fetch( 'https://connect.mailerlite.com/api/groups', {
+			headers: {
+				Authorization: `Bearer ${ settings.apiKey }`,
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+		} )
+			.then( ( response ) => response.json() )
 			.then( ( data ) => {
-				setGroups( data );
-				if ( data.length === 0 ) {
+				setGroups( data.data );
+				if ( data.data.length === 0 ) {
 					setNotices( ( prev ) => [
 						...prev,
 						{
@@ -81,7 +107,7 @@ export default function useOptions( nonce: string, restBase: string ) {
 			.finally( () => {
 				setIsFetchingGroups( false );
 			} );
-	}, [ restBase ] );
+	}, [ settings.apiKey ] );
 
 	/** Validate and submit updated settings to the REST API. */
 	async function handleSubmit( e: React.FormEvent ) {
@@ -132,12 +158,24 @@ export default function useOptions( nonce: string, restBase: string ) {
 	}
 
 	/** Update a single settings field. */
-	const updateField = useCallback( ( field: keyof Settings, value: string ) => {
-		setSettings( ( prev ) => ( {
-			...prev,
-			[ field ]: value,
-		} ) );
-	}, [] );
+	const updateField = useCallback(
+		( field: keyof Settings, value: string ) => {
+			setSettings( ( prev ) => ( {
+				...prev,
+				[ field ]: value,
+			} ) );
+			if ( field === 'groupId' ) {
+				const selectedGroup = groups.find(
+					( group ) => group.id === value
+				);
+				setSettings( ( prev ) => ( {
+					...prev,
+					groupName: selectedGroup ? selectedGroup.name : '',
+				} ) );
+			}
+		},
+		[ groups ]
+	);
 
 	return {
 		handleSubmit,
